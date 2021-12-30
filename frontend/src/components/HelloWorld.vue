@@ -17,17 +17,17 @@
         </v-col>
 
         <v-col cols="4" >
-            <v-btn block class="mx-3">
+            <v-btn block class="mx-3 green lighten-1">
                 Ver ultimos terremotos
             </v-btn>
         </v-col>
         <v-col cols="4" >
-            <v-btn block class="mx-3">
+            <v-btn block class="mx-3 green lighten-1">
                 Buscar terremotos en un país
             </v-btn>
         </v-col>
         <v-col cols="4" >
-            <v-btn block class="mx-3">
+            <v-btn block class="mx-3 green lighten-1">
                 Ver estadísticas de terremotos
             </v-btn>
         </v-col>
