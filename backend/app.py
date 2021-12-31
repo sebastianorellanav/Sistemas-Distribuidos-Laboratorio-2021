@@ -52,13 +52,26 @@ def stats():
 	datos={
 		"totales":totales,
 		"terremoto_con_prob_tsunami":tsunamis,
-		"grado_promedio":grado,
-		"alertas_verdes":alertas[0],
+		"grado_promedio":grado
+		
 
 	}
 	
 	return jsonify(datos)
-
+@app.route("/terremotos/<pais>",methods=["GET"])
+def paises(pais):
+	parametros={}
+	resultado=[]
+	print(pais)
+	datos=get_info(parametros)
+	for x in datos:
+		if x["place"]!=None:
+			lugar=x["place"].split(',')[-1]
+			if lugar[0]==' ':
+				lugar=lugar[1:]
+			if lugar == pais:
+				resultado.append(x)
+	return jsonify(resultado)
 
 
 if __name__ == '__main__':
