@@ -18,7 +18,7 @@
 
         <v-col cols="4">
             <v-btn block class="mx-3 green lighten-1" @click="redirectToLatestEarthquakes()">
-                Ver ultimos terremotos
+                Ver últimos terremotos
             </v-btn>
         </v-col>
         <v-col cols="4">
