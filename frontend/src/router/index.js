@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import SearchByDates from '../views/SearchByDates'
+import SearchByCountry from '../views/SearchByCountry'
+import LatestEarthquakes from '../views/LatestEarthquakes'
 
 Vue.use(VueRouter)
 
@@ -9,6 +12,21 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/search-by-dates',
+    name: 'SearchByDates',
+    component: SearchByDates
+  },
+  {
+    path: '/search-by-country',
+    name: 'SearchByCountry',
+    component: SearchByCountry
+  },
+  {
+    path: '/latest',
+    name: 'LatestEarthquakes',
+    component: LatestEarthquakes
   },
   {
     path: '/about',
