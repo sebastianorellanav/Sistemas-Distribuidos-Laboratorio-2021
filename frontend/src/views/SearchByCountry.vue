@@ -19,23 +19,23 @@
         </v-col>
     </v-row>
 
-    <v-row v-if="earthquakes.length > 0">
+        <v-row v-if="earthquakes.length > 0">
         <v-col cols="12" md="3">
             <v-card elevation="1">
                 <v-card-title>Magnitud</v-card-title>
                 <v-card-text>
                     <v-list>
                         <v-list-item>
-                            Promedio:
-                            <v-chip class="mx-2" color="primary">%</v-chip>
+                            Promedio: 
+                            <v-chip class="mx-2" color="primary"> {{statistics.mag[0]}} </v-chip>
                         </v-list-item>
                         <v-list-item>
                             Mediana:
-                            <v-chip class="mx-2" color="success">%</v-chip>
+                            <v-chip class="mx-2" color="success"> {{statistics.mag[1] }}</v-chip>
                         </v-list-item>
                         <v-list-item>
                             Moda:
-                            <v-chip class="mx-2" color="orange">%</v-chip>
+                            <v-chip class="mx-2" color="orange"> {{statistics.mag[2] }}</v-chip>
                         </v-list-item>
                     </v-list>
                 </v-card-text>
@@ -50,15 +50,15 @@
                     <v-list>
                         <v-list-item>
                             Promedio:
-                            <v-chip class="mx-2" color="primary">%</v-chip>
+                            <v-chip class="mx-2" color="primary">{{statistics.gap[0]}}</v-chip>
                         </v-list-item>
                         <v-list-item>
                             Mediana:
-                            <v-chip class="mx-2" color="success">%</v-chip>
+                            <v-chip class="mx-2" color="success">{{statistics.gap[1]}}</v-chip>
                         </v-list-item>
                         <v-list-item>
                             Moda:
-                            <v-chip class="mx-2" color="orange">%</v-chip>
+                            <v-chip class="mx-2" color="orange">{{statistics.gap[2]}}</v-chip>
                         </v-list-item>
                     </v-list>
                 </v-card-text>
@@ -68,20 +68,20 @@
 
         <v-col cols="12" md="3">
             <v-card elevation="1">
-                <v-card-title>RMS</v-card-title>
+                <v-card-title>Aceleración Sísmica</v-card-title>
                 <v-card-text>
                     <v-list>
                         <v-list-item>
                             Promedio:
-                            <v-chip class="mx-2" color="primary">%</v-chip>
+                            <v-chip class="mx-2" color="primary">{{statistics.rms[0]}}</v-chip>
                         </v-list-item>
                         <v-list-item>
                             Mediana:
-                            <v-chip class="mx-2" color="success">%</v-chip>
+                            <v-chip class="mx-2" color="success">{{statistics.rms[1]}}</v-chip>
                         </v-list-item>
                         <v-list-item>
                             Moda:
-                            <v-chip class="mx-2" color="orange">%</v-chip>
+                            <v-chip class="mx-2" color="orange">{{statistics.rms[2]}}</v-chip>
                         </v-list-item>
                     </v-list>
                 </v-card-text>
@@ -96,15 +96,15 @@
                     <v-list>
                         <v-list-item>
                             Promedio:
-                            <v-chip class="mx-2" color="primary">%</v-chip>
+                            <v-chip class="mx-2" color="primary">{{statistics.sig[0]}}</v-chip>
                         </v-list-item>
                         <v-list-item>
                             Mediana:
-                            <v-chip class="mx-2" color="success">%</v-chip>
+                            <v-chip class="mx-2" color="success">{{statistics.sig[1]}}</v-chip>
                         </v-list-item>
                         <v-list-item>
                             Moda:
-                            <v-chip class="mx-2" color="orange">%</v-chip>
+                            <v-chip class="mx-2" color="orange">{{statistics.sig[2]}}</v-chip>
                         </v-list-item>
                     </v-list>
                 </v-card-text>
@@ -127,7 +127,7 @@ export default {
     data: () => {
         return {
             inputCountry: "",
-            countries: ["Afganistán", "Albania", "Alemania", "Andorra", "Angola", "Antigua y Barbuda", "Arabia Saudita", "Argelia", "Argentina", "Armenia", "Australia", "Austria", "Azerbaiyán", "Bahamas", "Bangladés", "Barbados", "Baréin", "Bélgica", "Belice", "Benín", "Bielorrusia", "Birmania", "Bolivia", "Bosnia y Herzegovina", "Botsuana", "Brasil", "Brunéi", "Bulgaria", "Burkina Faso", "Burundi", "Bután", "Cabo Verde", "Camboya", "Camerún", "Canadá", "Catar", "Chad", "Chile", "China", "Chipre", "Ciudad del Vaticano", "Colombia", "Comoras", "Corea del Norte", "Corea del Sur", "Costa de Marfil", "Costa Rica", "Croacia", "Cuba", "Dinamarca", "Dominica", "Ecuador", "Egipto", "El Salvador", "Emiratos Árabes Unidos", "Eritrea", "Eslovaquia", "Eslovenia", "España", "Estados Unidos", "Estonia", "Etiopía", "Filipinas", "Finlandia", "Fiyi", "Francia", "Gabón", "Gambia", "Georgia", "Ghana", "Granada", "Grecia", "Guatemala", "Guyana", "Guinea", "Guinea ecuatorial", "Guinea-Bisáu", "Haití", "Honduras", "Hungría", "India", "Indonesia", "Irak", "Irán", "Irlanda", "Islandia", "Islas Marshall", "Islas Salomón", "Israel", "Italia", "Jamaica", "Japón", "Jordania", "Kazajistán", "Kenia", "Kirguistán", "Kiribati", "Kuwait", "Laos", "Lesoto", "Letonia", "Líbano", "Liberia", "Libia", "Liechtenstein", "Lituania", "Luxemburgo", "Madagascar", "Malasia", "Malaui", "Maldivas", "Malí", "Malta", "Marruecos", "Mauricio", "Mauritania", "México", "Micronesia", "Moldavia", "Mónaco", "Mongolia", "Montenegro", "Mozambique", "Namibia", "Nauru", "Nepal", "Nicaragua", "Níger", "Nigeria", "Noruega", "Nueva Zelanda", "Omán", "Países Bajos", "Pakistán", "Palaos", "Palestina", "Panamá", "Papúa Nueva Guinea", "Paraguay", "Perú", "Polonia", "Portugal", "Reino Unido", "República Centroafricana", "República Checa", "República de Macedonia", "República del Congo", "República Democrática del Congo", "República Dominicana", "República Sudafricana", "Ruanda", "Rumanía", "Rusia", "Samoa", "San Cristóbal y Nieves", "San Marino", "San Vicente y las Granadinas", "Santa Lucía", "Santo Tomé y Príncipe", "Senegal", "Serbia", "Seychelles", "Sierra Leona", "Singapur", "Siria", "Somalia", "Sri Lanka", "Suazilandia", "Sudán", "Sudán del Sur", "Suecia", "Suiza", "Surinam", "Tailandia", "Tanzania", "Tayikistán", "Timor Oriental", "Togo", "Tonga", "Trinidad y Tobago", "Túnez", "Turkmenistán", "Turquía", "Tuvalu", "Ucrania", "Uganda", "Uruguay", "Uzbekistán", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Yibuti", "Zambia", "Zimbabue"],
+            countries: ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre &amp; Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","St Kitts &amp; Nevis","St Lucia","St Vincent","St. Lucia","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad &amp; Tobago","Tunisia","Turkey","Turkmenistan","Turks &amp; Caicos","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"],
             rules: [
                 value => !!value || 'Requerido',
             ],
@@ -166,7 +166,8 @@ export default {
                     value: "time"
                 },
             ],
-            isLoading: false
+            isLoading: false,
+            statistics: []
         }
     },
 
@@ -179,7 +180,8 @@ export default {
             console.log(url_backend + endpoint + this.inputCountry);
             axios.get(url_backend + endpoint + this.inputCountry)
                 .then(response => {
-                    this.earthquakes = response.data;
+                    this.earthquakes = response.data.terremotos;
+                    this.statistics = response.data.estadisticas;
                     this.isLoading = false;
                 })
                 .catch(error => {
