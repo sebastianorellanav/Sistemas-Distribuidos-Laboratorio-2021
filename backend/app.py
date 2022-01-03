@@ -36,15 +36,22 @@ def get_info(param):
 	return respuesta
 
 def stats(data):
-	estadisticas={}
+	estadisticas={
+		"mag":[0,0,0],
+		"sig":[0,0,0],
+		"gap":[0,0,0],
+		"rms":[0,0,0]
+	}
+	
 	df=pd.DataFrame(data)
-	for i in [0,13,20,21,22]:
-		columna=df.columns[i]
-		df[columna]=pd.to_numeric(df[columna])
-		promedio=df[columna].mean()
-		mediana=df[columna].median()
-		moda=mode(df[columna].tolist())	
-		estadisticas[columna]=[promedio,mediana,moda]
+	if not df.empty:
+		for i in [0,13,20,21,22]:
+			columna=df.columns[i]
+			df[columna]=pd.to_numeric(df[columna])
+			promedio=df[columna].mean()
+			mediana=df[columna].median()
+			moda=mode(df[columna].tolist())	
+			estadisticas[columna]=[promedio,mediana,moda]
 
 	return estadisticas
 
