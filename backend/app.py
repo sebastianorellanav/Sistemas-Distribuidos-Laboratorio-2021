@@ -26,6 +26,7 @@ migrate= Migrate(app,db)
 def get_info(param):
 	
 	param["format"]="geojson"
+	param["limit"]= 20000
 	request_data= requests.get("https://earthquake.usgs.gov/fdsnws/event/1/query",params=param)
 	request_data=request_data.json()
 	request_data=request_data["features"]
@@ -58,6 +59,7 @@ def stats(data):
 
 @app.route("/terremotos",methods=["GET"])
 def api_consumer():
+	
 	argumentos=request.args.to_dict()
 	
 	datos=get_info(argumentos)
