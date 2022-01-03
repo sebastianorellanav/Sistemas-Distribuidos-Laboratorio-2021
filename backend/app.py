@@ -38,7 +38,7 @@ def get_info(param):
 def stats(data):
 	estadisticas={}
 	df=pd.DataFrame(data)
-	for i in [0,12,20,21,22]:
+	for i in [0,13,20,21,22]:
 		columna=df.columns[i]
 		df[columna]=pd.to_numeric(df[columna])
 		promedio=df[columna].mean()
