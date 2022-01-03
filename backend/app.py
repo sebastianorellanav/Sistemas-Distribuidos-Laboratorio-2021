@@ -104,7 +104,7 @@ def paises(pais):
 	resultado=[]
 	print(pais)
 	datos=get_info(parametros)
-	estadisticas=stats(datos)
+	
 	for x in datos:
 		if x["place"]!=None:
 			lugar=x["place"].split(',')[-1]
@@ -112,7 +112,7 @@ def paises(pais):
 				lugar=lugar[1:]
 			if lugar == pais:
 				resultado.append(x)
-	
+	estadisticas=stats(resultado)
 	retornar={"terremotos":resultado,"estadisticas": estadisticas}
 	return jsonify(retornar)
 
