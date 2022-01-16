@@ -202,6 +202,17 @@ export default {
                 })
                 .then(response => {
                     this.earthquakes = response.data.terremotos;
+                    this.earthquakes.forEach(e =>{ 
+                    let date = new Date(e.time);
+                    var dateStr =
+                    ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
+                    ("00" + date.getDate()).slice(-2) + "/" +
+                    date.getFullYear() + " " +
+                    ("00" + date.getHours()).slice(-2) + ":" +
+                    ("00" + date.getMinutes()).slice(-2) + ":" +
+                    ("00" + date.getSeconds()).slice(-2);
+                    e.time = dateStr;
+                })
                     this.statistics = response.data.estadisticas;
                     this.isLoading = false;
                 })

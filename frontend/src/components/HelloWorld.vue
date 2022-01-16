@@ -16,17 +16,19 @@
             </p>
         </v-col>
 
-        <v-col cols="4">
+        <v-col cols="6">
             <v-btn block class="mx-3 green lighten-1" @click="redirectToLatestEarthquakes()">
                 Ver últimos terremotos
             </v-btn>
         </v-col>
+        <!--
         <v-col cols="4">
             <v-btn block class="mx-3 green lighten-1" @click="redirectToSearchByCountry()">
                 Buscar terremotos en un país
             </v-btn>
         </v-col>
-        <v-col cols="4">
+        -->
+        <v-col cols="6">
             <v-btn block class="mx-3 green lighten-1" @click="redirectToSearchByDate()">
                 Buscar terremotos por fecha
             </v-btn>
