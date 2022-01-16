@@ -46,7 +46,7 @@ for i in range(120): #60 Minutes
     #Enviar el mensaje 
     producer.send(TOPIC_NAME, json.dumps(response).encode('utf-8'))
     print("antes del sleep")
-    sleep(30)
+    sleep(900)
 
 
 

@@ -34,7 +34,7 @@ class Terremoto(db.Model):
 	dmin= db.Column(db.Numeric,nullable=True)
 	rms= db.Column(db.Numeric,nullable=True)
 	gap= db.Column(db.Numeric,nullable=True)
-	magType= db.Column(db.Text,nullable=True)
+	mag_type= db.Column(db.Text,nullable=True)
 	tipe= db.Column(db.Text,nullable=True)
 
 
@@ -64,12 +64,12 @@ class Terremoto(db.Model):
 		self.dmin=d["dmin"]
 		self.rms=d["rms"]
 		self.gap=d["gap"]
-		self.magType=d["magType"]
+		self.mag_type=d["magType"]
 		self.tipe=d["type"]
 class TerremotoSchema(SQLAlchemyAutoSchema):
 	class Meta:
 		fields = ('mag','place','time','updated','tz','url','detail','felt','cdi','mmi','alert','status','tsunami','sig',
-		'net','code','ids','sources','types','nst','dmin','rms','gap','magType','tipe')
+		'net','code','ids','sources','types','nst','dmin','rms','gap','mag_type','tipe')
 
 def objeto_db():
 	global db
