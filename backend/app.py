@@ -1,10 +1,5 @@
-from operator import mod
-import re
-from typing import Text
-from pandas.core.tools.numeric import to_numeric
 import requests
-from flask import Flask, jsonify, request,make_response
-import json
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import pandas as pd
 from statistics import mode

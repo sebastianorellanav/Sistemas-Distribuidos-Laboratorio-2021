@@ -9,3 +9,5 @@ Flask==2.0.1
 Flask-Cors==3.0.10
 requests-unixsocket==0.2.0
 responses==0.5.0
+pandas>=1.2.4
+statistics>=1.0.3.5
