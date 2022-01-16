@@ -8,19 +8,23 @@ import json
 from flask_cors import CORS
 import pandas as pd
 from statistics import mode
-
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
+from flask_migrate import Migrate
+import modelos as mo
+db= mo.objeto_db()
 app= Flask(__name__)
 CORS(app)
 
-"""
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/cai"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/terremotos"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 db.init_app(app)
 
 ma = Marshmallow(app)
 migrate= Migrate(app,db)
-"""
+
 
 
 def get_info(param):
@@ -32,7 +36,10 @@ def get_info(param):
 	request_data=request_data["features"]
 	respuesta=[]
 	for x in request_data:
-		respuesta.append(x["properties"])
+		add=x["properties"]
+		add["id"]=x["id"]
+		respuesta.append(add)
+		
 	
 	return respuesta
 
@@ -61,8 +68,8 @@ def stats(data):
 def api_consumer():
 	
 	argumentos=request.args.to_dict()
-	
 	datos=get_info(argumentos)
+	
 	estadisticas=stats(datos)
 	retornar={"terremotos":datos,"estadisticas": estadisticas}
 	return jsonify(retornar)
