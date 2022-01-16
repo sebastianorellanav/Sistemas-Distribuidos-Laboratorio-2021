@@ -6,6 +6,7 @@ services:
      - "2181:2181"
   kafka:
     build: .
+    image: kafka-docker_kafka
     ports:
      - "9092:9092"
     expose:

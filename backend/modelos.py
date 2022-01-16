@@ -69,7 +69,7 @@ class Terremoto(db.Model):
 class TerremotoSchema(SQLAlchemyAutoSchema):
 	class Meta:
 		fields = ('mag','place','time','updated','tz','url','detail','felt','cdi','mmi','alert','status','tsunami','sig',
-		'net','code','ids','sources','types','nst','dmin','rms','gap','mag_type','tipe')
+		'net','code','ids','sources','types','nst','dmin','rms','gap','mag_type','tipe','id')
 
 def objeto_db():
 	global db

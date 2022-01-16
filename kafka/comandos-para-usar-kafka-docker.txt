@@ -1,6 +1,6 @@
 Entrar a la shell de kafka:
 
-	docker exec -i -t -u root $(docker ps | grep docker_kafka | cut -d' ' -f1) /bin/bash
+	sudo docker exec -i -t -u root $(sudo docker ps | grep docker_kafka | cut -d' ' -f1) /bin/bash
 
 Crear un tópico: (en este caso se le coloca test al topico)
 
