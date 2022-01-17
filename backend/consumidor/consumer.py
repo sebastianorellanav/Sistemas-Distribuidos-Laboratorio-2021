@@ -5,8 +5,8 @@ import psycopg2
 TOPIC_NAME = 'terremoto'
 
 #Crear el consumidor
-consumer = KafkaConsumer(TOPIC_NAME,bootstrap_servers=['localhost:9092'],auto_offset_reset='earliest',enable_auto_commit=True,group_id='my-group',value_deserializer=lambda x: loads(x.decode('utf-8')))
-conn = psycopg2.connect( database="terremotos", user='postgres', password='postgres', host='127.0.0.1', port= '5432')
+consumer = KafkaConsumer(TOPIC_NAME,bootstrap_servers=['kafka:9092'],auto_offset_reset='earliest',enable_auto_commit=True,group_id='my-group',value_deserializer=lambda x: loads(x.decode('utf-8')))
+conn = psycopg2.connect( database="terremotos", user='postgres', password='postgres', host='db', port= '5432')
 cursor = conn.cursor()
 
 #Leer los mensajes

@@ -1,9 +1,12 @@
-version: '2'
+version: '2.1'
 services:
   zookeeper:
     image: wurstmeister/zookeeper:3.4.6
     ports:
-     - "2181:2181"
+     - "2181:2181"    
+    networks:
+      - api_bridge
+#Kafka depende de zookeeper
   kafka:
     build: ./kafka
     ports:
@@ -16,18 +19,110 @@ services:
       KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "terremoto:1:1"
     volumes:
      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server 127.0.0.1:9092 --topic terremoto --describe"]
+      interval: 20s
+      timeout: 120s
+      retries: 20
+    networks:
+      - api_bridge
+      
+#El consumidor depende de que la base de datos este aceptando conexiones     
+  consumer:
+    build:
+      context: ./backend/consumidor
+      dockerfile: Dockerfile
+    volumes:
+      - './backend/consumidor:/consumer'
+    depends_on:
+       db: 
+          condition: service_healthy 
+    links:
+      - db
+    networks:
+      - api_bridge
+#El productor depende de kafka      
+  producer:
+    build:
+      context: ./backend/productor
+      dockerfile: Dockerfile
+    volumes:
+      - './backend/productor:/producer'
+    depends_on:
+      kafka:
+        condition: service_healthy
+    links:
+      - kafka
+    networks:
+      - api_bridge
+ #Flask depende de la base de datos
   flask:
-    build: ./backend
+    build:
+      context: ./backend/app
+      dockerfile: Dockerfile
+    volumes:
+      - './backend/app:/backend'
     ports:
-     - "5000:5000"
-    expose: 
-     - "5000"
-  vuejs:
-    build: ./frontend
-    ports:
-     - "8080:8080"
+      - 5000:5000
     expose:
-     - "8080"
-     
+      - 5000
+
+    depends_on:
+       db: 
+          condition: service_healthy
+    links:
+      - db
+    networks:
+      - api_bridge
+#La base de datos espera a que zookeper y kafka esten arriba
+  db:
+    image: postgres:13.1
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    user: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - APP_DB_USER=root
+      - APP_DB_PASS=root
+      - APP_DB_NAME=terremotos
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    depends_on:
+      - kafka
+      - zookeeper
+    networks:
+      - api_bridge
+#vue depende de flask
+  vue:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - './frontend:/frontend'
+      - '/frontend/node_modules'
+    ports:
+      - 8080:8080
+    expose: 
+      - 8080
+    depends_on:
+      - flask
+    networks:
+      - api_bridge
+networks:
+  api_bridge:
+    driver: bridge
+

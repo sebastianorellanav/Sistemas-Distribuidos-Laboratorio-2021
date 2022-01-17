@@ -33,7 +33,7 @@ def get_earthquakes():
     return respuesta
 
 #Crear el productor
-producer = KafkaProducer(bootstrap_servers='localhost:9092')
+producer = KafkaProducer(bootstrap_servers='kafka:9092')
 
 for i in range(120): #60 Minutes
     print("nuevo ciclo en el for")
