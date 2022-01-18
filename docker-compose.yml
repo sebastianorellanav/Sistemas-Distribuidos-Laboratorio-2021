@@ -102,8 +102,10 @@ services:
     expose:
       - 5432
     depends_on:
+      kafka:
+        condition: service_healthy
+    links:
       - kafka
-      - zookeeper
     networks:
       - api_bridge
 #vue depende de flask
