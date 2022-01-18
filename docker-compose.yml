@@ -41,7 +41,9 @@ services:
       - './backend/consumidor:/consumer'
     depends_on:
        db: 
-          condition: service_healthy 
+          condition: service_healthy
+       kafka:
+        condition: service_healthy
     links:
       - db
     networks:
