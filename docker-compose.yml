@@ -53,7 +53,7 @@ services:
     build:
       context: ./backend/productor
       dockerfile: Dockerfile
-    enviroment:
+    environment:
       - "PYTHONUNBUFFERED=1"
     volumes:
       - './backend/productor:/producer'
