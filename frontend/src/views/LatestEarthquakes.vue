@@ -160,7 +160,7 @@ export default {
 
     created() {
         this.isLoading = true;
-        let url_backend = "http://flask:5000";
+        let url_backend = "http://23.99.250.142:5000";
         let endpoint = "/terremotos";
         console.log("searching...");
         console.log(url_backend + endpoint);
