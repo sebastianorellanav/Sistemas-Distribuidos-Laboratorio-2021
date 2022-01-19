@@ -44,11 +44,8 @@ services:
     depends_on:
        db: 
           condition: service_healthy
-       kafka:
-          condition: service_healthy
     links:
       - db
-      - kafka
     networks:
       - api_bridge
 #El productor depende de kafka      
