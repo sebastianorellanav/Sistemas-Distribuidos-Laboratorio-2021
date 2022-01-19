@@ -37,6 +37,8 @@ services:
     build:
       context: ./backend/consumidor
       dockerfile: Dockerfile
+    environment:
+      - "PYTHONUNBUFFERED=1"
     volumes:
       - './backend/consumidor:/consumer'
     depends_on:
@@ -54,6 +56,8 @@ services:
     build:
       context: ./backend/productor
       dockerfile: Dockerfile
+    enviroment:
+      - "PYTHONUNBUFFERED=1"
     volumes:
       - './backend/productor:/producer'
     depends_on:
