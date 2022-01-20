@@ -35,13 +35,14 @@ def get_earthquakes():
 #Crear el productor
 producer = KafkaProducer(bootstrap_servers='kafka:9092')
 
-for i in range(120): #60 Minutes
+while True: #60 Minutes
     print("nuevo ciclo en el for")
     headers = {
         'Client-Identifier': 'dan-citymonitor',
     }
 
     response = get_earthquakes()
+    print(response)
     #r = response.json()
     #Enviar el mensaje 
     producer.send(TOPIC_NAME, json.dumps(response).encode('utf-8'))
