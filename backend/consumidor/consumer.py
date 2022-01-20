@@ -5,7 +5,7 @@ from time import sleep
 import psycopg2
 TOPIC_NAME = 'terremoto'
 #Crear el consumidor
-sleep(60)
+sleep(30)
 print("consumidor")
 consumer = KafkaConsumer(TOPIC_NAME,bootstrap_servers=['kafka:9092'],auto_offset_reset='earliest',enable_auto_commit=True,group_id='my-group',value_deserializer=lambda x: loads(x.decode('utf-8')))
 print("conectando a psycopg2")
@@ -15,7 +15,7 @@ cursor = conn.cursor()
 print("entrando a while")
 #Leer los mensajes
 while True:
-    print("reintentando",len(consumer),cursor)
+    print("reintentando",consumer,cursor)
     sleep(10)
     for message in consumer:
         print("\n\nVALUE:",message.value)
