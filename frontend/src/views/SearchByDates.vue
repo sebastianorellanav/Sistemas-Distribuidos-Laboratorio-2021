@@ -28,6 +28,12 @@
             <v-btn class="green lighten-2" @click="search()">Buscar</v-btn>
         </v-col>
     </v-row>
+    <v-row>
+        <v-col cols="6">
+            <v-alert v-if="errorDates" dense type="error"> La fecha de inicio debe ser menor que la fecha de término.
+    </v-alert>
+        </v-col>
+    </v-row>
 
     <v-row v-if="isLoading">
         <v-col v-for="i in 4" cols="12" sm="6" md="3" :key="i">
@@ -35,14 +41,14 @@
         </v-col>
     </v-row>
 
-         <v-row v-if="earthquakes.length > 0">
+    <v-row v-if="earthquakes.length > 0">
         <v-col cols="12" md="3">
             <v-card elevation="1">
                 <v-card-title>Magnitud</v-card-title>
                 <v-card-text>
                     <v-list>
                         <v-list-item>
-                            Promedio: 
+                            Promedio:
                             <v-chip class="mx-2" color="primary"> {{statistics.mag[0]}} </v-chip>
                         </v-list-item>
                         <v-list-item>
@@ -183,13 +189,21 @@ export default {
                     value: "time"
                 },
             ],
-            statistics: []
+            statistics: [],
+            errorDates: false,
         }
     },
 
     methods: {
 
         search() {
+            if (this.dateSince >= this.dateUntil) {
+                console.log("date since es mayor que until")
+                this.errorDates = true;
+            } else {
+                console.log("estan bien")
+                this.errorDates = false;
+            }
             console.log("searching...");
             this.isLoading = true;
             let url_backend = "http://localhost:5000";
@@ -202,17 +216,17 @@ export default {
                 })
                 .then(response => {
                     this.earthquakes = response.data.terremotos;
-                    this.earthquakes.forEach(e =>{ 
-                    let date = new Date(e.time);
-                    var dateStr =
-                    ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
-                    ("00" + date.getDate()).slice(-2) + "/" +
-                    date.getFullYear() + " " +
-                    ("00" + date.getHours()).slice(-2) + ":" +
-                    ("00" + date.getMinutes()).slice(-2) + ":" +
-                    ("00" + date.getSeconds()).slice(-2);
-                    e.time = dateStr;
-                })
+                    this.earthquakes.forEach(e => {
+                        let date = new Date(e.time);
+                        var dateStr =
+                            ("00" + (date.getMonth() + 1)).slice(-2) + "/" +
+                            ("00" + date.getDate()).slice(-2) + "/" +
+                            date.getFullYear() + " " +
+                            ("00" + date.getHours()).slice(-2) + ":" +
+                            ("00" + date.getMinutes()).slice(-2) + ":" +
+                            ("00" + date.getSeconds()).slice(-2);
+                        e.time = dateStr;
+                    })
                     this.statistics = response.data.estadisticas;
                     this.isLoading = false;
                 })

@@ -43,7 +43,7 @@ while True:
     # Guardar terremotos en Kafka
     for terremoto in response:
         timestamp = datetime.now()
-        print("[", timestamp, "] - GUARDANDO TERREMOTO CON ID= ", terremoto["id"])
+        print("[", timestamp, "] - GUARDANDO TERREMOTO CON ID= ", terremoto["id"], " EN KAFKA")
         producer.send(TOPIC_NAME, json.dumps(terremoto).encode('utf-8'))
     
     

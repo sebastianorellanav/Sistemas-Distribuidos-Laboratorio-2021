@@ -16,7 +16,7 @@ consumer = KafkaConsumer(TOPIC_NAME,bootstrap_servers=['kafka:9093'],auto_offset
 
 timestamp = datetime.now()
 print("[", timestamp, "] - CONECTANDO CON BASES DE DATOS POSTGRESQL ...")
-conn = psycopg2.connect( database="terremotos", user='postgres', password='postgres', host='40.78.155.134', port= '5432')
+conn = psycopg2.connect( database="terremotos", user='postgres', password='postgres', host='db', port= '5432')
 cursor = conn.cursor()
 
 #Leer los mensajes
