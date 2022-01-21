@@ -1,16 +1,14 @@
+# Librerías
 from kafka import KafkaProducer
 import json
 import requests
 from time import sleep
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
+# Constantes
 TOPIC_NAME = 'terremoto'
-#msg = {
-#    "status": 200, 
-#    "message": "mensaje de prueba", 
-#    "terremotos": [1,2,3,4,"string"]
-#    }
 
+# Función para conectarse a la API de terremotos
 def get_earthquakes():
     param = {}
     today = date.today()
@@ -29,25 +27,26 @@ def get_earthquakes():
         add=x["properties"]
         add["id"]=x["id"]
         respuesta.append(add)
-		
     return respuesta
 
-#Crear el productor
-producer = KafkaProducer(bootstrap_servers='kafka:9092')
+# Se crear el productor
+producer = KafkaProducer(bootstrap_servers='kafka:9093')
 
-while True: #60 Minutes
-    print("nuevo ciclo en el for")
-    headers = {
-        'Client-Identifier': 'dan-citymonitor',
-    }
-
+# Por siempre hacer:
+while True: 
+    sleep(60) # Esperar 60 segundo para hacer una nueva request
+    # Obtener Terremotos
     response = get_earthquakes()
-    print(response)
-    #r = response.json()
-    #Enviar el mensaje 
-    producer.send(TOPIC_NAME, json.dumps(response).encode('utf-8'))
-    print("antes del sleep")
-    sleep(60)
+    timestamp = datetime.now()
+    print("[", timestamp, "] - OTENIENDO TERREMOTOS")
+
+    # Guardar terremotos en Kafka
+    for terremoto in response:
+        timestamp = datetime.now()
+        print("[", timestamp, "] - GUARDANDO TERREMOTO CON ID= ", terremoto["id"])
+        producer.send(TOPIC_NAME, json.dumps(terremoto).encode('utf-8'))
+    
+    
 
 
 
