@@ -192,7 +192,7 @@ export default {
         search() {
             console.log("searching...");
             this.isLoading = true;
-            let url_backend = "http://localhost:5000";
+            let url_backend = "http://40.78.155.134:5000";
             let endpoint = "/terremotos";
             axios.get(url_backend + endpoint, {
                     params: {

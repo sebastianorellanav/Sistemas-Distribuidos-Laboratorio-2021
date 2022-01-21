@@ -5,9 +5,7 @@ services:
     ports:
      - "2181:2181"    
     networks:
-      api_bridge:
-        aliases:
-          - zookeeper_host 
+      - api_bridge
 #Kafka depende de zookeeper
   kafka:
     build: ./kafka
@@ -32,9 +30,7 @@ services:
       timeout: 120s
       retries: 20
     networks:
-      api_bridge:
-        aliases: 
-          - kafka_host
+      - api_bridge
       
 #El consumidor depende de que la base de datos este aceptando conexiones     
   consumer:
@@ -46,15 +42,12 @@ services:
     volumes:
       - './backend/consumidor:/consumer'
     depends_on:
-      db: 
-        condition: service_healthy
+       db: 
+          condition: service_healthy
     links:
       - db
-      - kafka
     networks:
-      api_bridge:
-        aliases: 
-          - consumer_host
+      - api_bridge
 #El productor depende de kafka      
   producer:
     build:
@@ -70,9 +63,7 @@ services:
     links:
       - kafka
     networks:
-      api_bridge:
-        aliases:
-          - producer_host 
+      - api_bridge
  #Flask depende de la base de datos
   flask:
     build:
@@ -91,9 +82,7 @@ services:
     links:
       - db
     networks:
-      api_bridge:
-        aliases:
-          - flask_host
+      - api_bridge
 #La base de datos espera a que zookeper y kafka esten arriba
   db:
     image: postgres:13.1
@@ -122,9 +111,7 @@ services:
     links:
       - kafka
     networks:
-      api_bridge:
-        aliases: 
-          - db_host
+      - api_bridge
 #vue depende de flask
   vue:
     build:
@@ -140,9 +127,7 @@ services:
     depends_on:
       - flask
     networks:
-      api_bridge:
-        aliases:
-          - vue_host
+      - api_bridge
 networks:
   api_bridge:
     driver: bridge
