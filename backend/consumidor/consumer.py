@@ -1,32 +1,38 @@
+# Librerías
 from kafka import KafkaConsumer
 from json import loads
 from datetime import datetime
 from time import sleep
 import psycopg2
+
+# Constantes
 TOPIC_NAME = 'terremoto'
-#Crear el consumidor
-sleep(30)
-print("consumidor")
-consumer = KafkaConsumer(TOPIC_NAME,bootstrap_servers=['kafka:9092'],auto_offset_reset='earliest',enable_auto_commit=True,group_id='my-group',value_deserializer=lambda x: loads(x.decode('utf-8')))
-print("conectando a psycopg2")
+
+sleep(20) # Esperar 30 segundos antes de crear el consumidor
+
+timestamp = datetime.now()
+print("[", timestamp, "] - CREANDO CONSUMIDOR ...")
+consumer = KafkaConsumer(TOPIC_NAME,bootstrap_servers=['kafka:9093'],auto_offset_reset='earliest',enable_auto_commit=True,value_deserializer=lambda x: loads(x.decode('utf-8')))
+
+timestamp = datetime.now()
+print("[", timestamp, "] - CONECTANDO CON BASES DE DATOS POSTGRESQL ...")
 conn = psycopg2.connect( database="terremotos", user='postgres', password='postgres', host='40.78.155.134', port= '5432')
-print("tomando cursor")
 cursor = conn.cursor()
-print("entrando a while")
+
 #Leer los mensajes
 while True:
-    print("reintentando",consumer,cursor)
     sleep(10)
-    for message in consumer:
-        print("\n\nVALUE:",message.value)
-        message = message.value
-        for terremoto in message:
-            print("\n\nTERREMOTO:",terremoto)
-            try:
-                cursor.execute("INSERT INTO terremoto (id,mag,place,time,updated,tz,url,detail,felt,cdi,mmi,alert,status,tsunami,sig,net,code,ids,sources,types,nst,dmin,rms,gap,mag_type,tipe) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(terremoto["id"],terremoto["mag"],terremoto["place"],terremoto["time"],terremoto["updated"],terremoto["tz"],terremoto["url"],terremoto["detail"],terremoto["felt"],terremoto["cdi"],terremoto["mmi"],terremoto["alert"],terremoto["status"],terremoto["tsunami"],terremoto["sig"],terremoto["net"],terremoto["code"],terremoto["ids"],terremoto["sources"],terremoto["types"],terremoto["nst"],terremoto["dmin"],terremoto["rms"],terremoto["gap"],terremoto["magType"],terremoto["type"]))
-                conn.commit()
-                print("terremoto agregado: ",terremoto["id"])
-            except Exception as e:
-                print("no fue agregado con error",e,'\n\n')
-                conn.rollback()
-conn.close()
+    timestamp = datetime.now()
+    print("[", timestamp, "] - CONSUMIENDO TERREMOTOS DESDE KAFKA ...")
+    for terremoto in consumer:
+        terremoto = terremoto.value
+        try:
+            cursor.execute("INSERT INTO terremoto (id,mag,place,time,updated,tz,url,detail,felt,cdi,mmi,alert,status,tsunami,sig,net,code,ids,sources,types,nst,dmin,rms,gap,mag_type,tipe) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(terremoto["id"],terremoto["mag"],terremoto["place"],terremoto["time"],terremoto["updated"],terremoto["tz"],terremoto["url"],terremoto["detail"],terremoto["felt"],terremoto["cdi"],terremoto["mmi"],terremoto["alert"],terremoto["status"],terremoto["tsunami"],terremoto["sig"],terremoto["net"],terremoto["code"],terremoto["ids"],terremoto["sources"],terremoto["types"],terremoto["nst"],terremoto["dmin"],terremoto["rms"],terremoto["gap"],terremoto["magType"],terremoto["type"]))
+            conn.commit()
+            timestamp = datetime.now()
+            print("[", timestamp, "] - GUARDANDO TERREMOTO CON ID= ", terremoto["id"], " EN BASE DE DATOS")
+        except Exception as e:
+            timestamp = datetime.now()
+            print("[", timestamp, "] - EL TERREMOTO CON ID= ", terremoto["id"], " YA FUE GUARDADO EN LA BASE DE DATOS")
+            conn.rollback()
+    conn.close()
