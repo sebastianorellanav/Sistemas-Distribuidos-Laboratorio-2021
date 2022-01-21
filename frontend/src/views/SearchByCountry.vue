@@ -174,7 +174,7 @@ export default {
     methods: {
         search() {
             this.isLoading = true;
-            let url_backend = "http://localhost:5000";
+            let url_backend = "http://40.78.155.134:5000";
             let endpoint = "/terremotos/";
             console.log("searching...");
             console.log(url_backend + endpoint + this.inputCountry);
